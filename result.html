@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Quiz Result</title>
+  <!-- Add any additional styles if needed -->
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      background-color: #f0f0f0;
+      margin: 0;
+      padding: 0;
+      text-align: center;
+      padding-top: 50px;
+    }
+
+    #result-container {
+      max-width: 800px;
+      margin: 20px auto;
+      background-color: #fff;
+      padding: 20px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      border-radius: 10px;
+    }
+
+    #initialsInput {
+      margin-top: 10px;
+    }
+
+    #submitBtn {
+      margin-top: 10px;
+      padding: 12px 24px;
+      font-size: 16px;
+      background-color: #0e3868;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    #submitBtn:hover {
+      background-color: #135095;
+    }
+
+    #scoreDisplay {
+      font-size: 24px;
+      font-weight: bold;
+      margin-bottom: 20px;
+    }
+  </style>
+</head>
+<body>
+  <div id="result-container">
+    <h2>All done!</h2>
+    <p>Your score: <span id="scoreDisplay"></span></p>
+    <label for="initialsInput">Enter your initials:</label>
+    <input type="text" id="initialsInput">
+    <button id="submitBtn">Submit</button>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const urlParams = new URLSearchParams(window.location.search);
+      const score = urlParams.get('score');
+  
+      // Display the score on the result page
+      const scoreDisplay = document.getElementById('scoreDisplay');
+      if (scoreDisplay) {
+        scoreDisplay.textContent = score || 'N/A';
+      }
+  
+      const submitBtn = document.getElementById('submitBtn');
+      if (submitBtn) {
+        submitBtn.addEventListener('click', function () {
+          const initialsInput = document.getElementById('initialsInput');
+          const initials = initialsInput.value.trim();
+  
+          if (!initials) {
+            alert('Please enter your initials.');
+            return;
+          }
+  
+          // Save the score and initials
+          const highScores = JSON.parse(localStorage.getItem('highScores')) || [];
+          highScores.push({ initials, score: parseInt(score) });
+          localStorage.setItem('highScores', JSON.stringify(highScores));
+  
+          // Redirect to highscores.html
+          window.location.href = 'highscores.html';
+        });
+      }
+    });
+  </script>
+</body>
+</html>

@@ -24,23 +24,22 @@
 <div id="high-score">High Score: <span id="high-score-value">0</span></div>
 
 <script>
-    var timerElement = document.getElementById('timer');
-    var startBtn = document.getElementById('start-btn');
-    var quizContainer = document.getElementById('quiz-container');
-    var questionElement = document.getElementById('question');
-    var optionsElement = document.getElementById('options');
-    var feedbackElement = document.getElementById('feedback');
-    var nextBtn = document.getElementById('next-btn');
-    var highScoreElement = document.getElementById('high-score-value');
-  
-    var time = 60;
-    var currentQuestionIndex = 0;
-    var score = 0;
-    var highScore = localStorage.getItem('highScore') || 0;
-    var timerInterval;
+  var timerElement = document.getElementById('timer');
+  var startBtn = document.getElementById('start-btn');
+  var quizContainer = document.getElementById('quiz-container');
+  var questionElement = document.getElementById('question');
+  var optionsElement = document.getElementById('options');
+  var feedbackElement = document.getElementById('feedback');
+  var nextBtn = document.getElementById('next-btn');
+  var highScoreElement = document.getElementById('high-score-value');
 
+  var time = 60;
+  var currentQuestionIndex = 0;
+  var score = 0;
+  var highScore = localStorage.getItem('highScore') || 0;
+  var timerInterval;
 
-    var questions = [
+  var questions = [
     {
       question: 'What does the acronym "API" stand for?',
       options: ['Advanced Programming Interface', 'Application Programming Interface', 'Automated Program Integration', 'Adaptive Protocol Interface'],
@@ -67,3 +66,108 @@
       correctAnswer: 'To define alternative text for an image'
     },
   ];
+
+  function updateTimer() {
+    timerElement.textContent = 'Time: ' + time + ' seconds';
+  }
+
+  function startTimer() {
+    timerInterval = setInterval(function () {
+      time--;
+      updateTimer();
+      if (time <= 0) {
+        clearInterval(timerInterval);
+        endQuiz();
+      }
+    }, 1000);
+  }
+
+  function startQuiz() {
+    startBtn.style.display = 'none';
+    quizContainer.style.display = 'block';
+    showQuestion();
+    startTimer();
+  }
+
+  function showQuestion() {
+    const currentQuestion = questions[currentQuestionIndex];
+    questionElement.textContent = currentQuestion.question;
+
+    optionsElement.innerHTML = '';
+    currentQuestion.options.forEach((option, index) => {
+      const optionBtn = document.createElement('button');
+      optionBtn.textContent = option;
+      optionBtn.addEventListener('click', () => checkAnswer(option));
+      optionsElement.appendChild(optionBtn);
+    });
+  }
+
+  function checkAnswer(selectedOption) {
+    const currentQuestion = questions[currentQuestionIndex];
+
+    if (selectedOption === currentQuestion.correctAnswer) {
+      feedbackElement.textContent = 'Correct!';
+      score++;
+    } else {
+      feedbackElement.textContent = 'Incorrect!';
+      time -= 10;
+      if (time < 0) time = 0;
+    }
+
+    nextBtn.style.display = 'block';
+  }
+
+  function nextQuestion() {
+    currentQuestionIndex++;
+    feedbackElement.textContent = '';
+    nextBtn.style.display = 'none';
+
+    if (currentQuestionIndex < questions.length) {
+      showQuestion();
+    } else {
+      endQuiz();
+    }
+  }
+
+  function endQuiz() {
+    clearInterval(timerInterval);
+    quizContainer.style.display = 'none';
+
+    if (currentQuestionIndex === questions.length) {
+      // Redirect to result.html with the score as a query parameter
+      window.location.href = 'result.html?score=' + score;
+    }
+  }
+
+  function saveScore() {
+    const initials = prompt('Enter your initials:');
+    if (score > highScore) {
+      highScore = score;
+      localStorage.setItem('highScore', highScore);
+      highScoreElement.textContent = highScore;
+    }
+
+    console.log(`Initials: ${initials}, Score: ${score}`);
+    submitQuiz();
+  }
+
+  function submitQuiz() {
+    // Redirect to the result page after submitting initials, including the score as a query parameter
+    window.location.href = `result.html?score=${score}`;
+  }
+
+  // Event listeners
+  startBtn.addEventListener('click', startQuiz);
+  nextBtn.addEventListener('click', nextQuestion);
+
+  // Display initial high score
+  highScoreElement.textContent = highScore;
+
+  // Start the timer when the page loads
+  document.addEventListener('DOMContentLoaded', function () {
+    updateTimer();
+  });
+</script>
+
+</body>
+</html>

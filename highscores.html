@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>High Scores</title>
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      background-color: #f0f0f0;
+      margin: 0;
+      padding: 0;
+      text-align: center;
+      padding-top: 50px;
+    }
+
+    #high-scores-container {
+      max-width: 800px;
+      margin: 20px auto;
+      background-color: #fafbfa3f;
+      padding: 20px;
+      box-shadow: 0 0 10px rgba(148, 45, 45, 0.1);
+      border-radius: 10px;
+    }
+
+    #scoresList {
+      list-style: none;
+      padding: 0;
+      background-color: #0e3868; /* Added background color for the list of high scores */
+      border-radius: 10px; /* Added border radius for a rounded look */
+      margin-top: 15px; /* Adjusted margin to create space between the title and the list */
+      padding: 10px; /* Added padding for a cleaner look */
+    }
+    
+    .score-item {
+        font-size: 18xp;
+        margin-bottom: 10px;
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+    }
+
+    .high-score-value {
+        font-weight: bold;
+        color: #fff;
+        padding: 5xp 10px;
+        background-color: #0e3868;
+        border-radius: 5px;
+    }
+
+    .buttons-container {
+      margin-top: 20px;
+    }
+
+    #takeAgainBtn,
+    #eraseScoreboardBtn {
+      margin: 0 10px;
+      padding: 12px 24px;
+      font-size: 16px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    #takeAgainBtn:hover,
+    #eraseScoreboardBtn:hover {
+        background-color: #0e3868;
+        color: #fff;
+    }
+  </style>
+</head>
+<body>
+
+    <div id="high-scores-container">
+        <h2>High Scores</h2>
+        <ul id="scoresList"></ul>
+        
+        <div class="buttons-container">
+          <button id="takeAgainBtn">Take Again</button>
+          <button id="eraseScoreboardBtn">Erase Scoreboard</button>
+        </div>
+    </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+          // Get high scores from localStorage
+          const highScores = JSON.parse(localStorage.getItem('highScores')) || [];
+      
+          // Display high scores
+          const scoresList = document.getElementById('scoresList');
+      
+          highScores.forEach(entry => {
+            const listItem = document.createElement('li');
+            listItem.innerHTML = `<span class="high-score-value">${entry.initials}: ${entry.score}</span>`;
+            scoresList.appendChild(listItem);
+          });
+      
+          const takeAgainBtn = document.getElementById('takeAgainBtn');
+          const eraseScoreboardBtn = document.getElementById('eraseScoreboardBtn');
+      
+          if (takeAgainBtn) {
+            takeAgainBtn.addEventListener('click', function () {
+              // Redirect to the quiz page to take the quiz again
+              window.location.href = 'index.html';
+            });
+          }
+      
+          if (eraseScoreboardBtn) {
+            eraseScoreboardBtn.addEventListener('click', function () {
+              // Erase the scoreboard (clear localStorage)
+              localStorage.removeItem('highScores');
+              // Refresh the page to reflect the changes
+              window.location.reload();
+            });
+          }
+        });
+      </script>      
+ </body>
+</html>
+
