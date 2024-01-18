@@ -22,3 +22,20 @@
 <div id="timer">Time: 60 seconds</div>
 <button id="start-btn">Start Quiz</button>
 <div id="high-score">High Score: <span id="high-score-value">0</span></div>
+
+<script>
+    var timerElement = document.getElementById('timer');
+    var startBtn = document.getElementById('start-btn');
+    var quizContainer = document.getElementById('quiz-container');
+    var questionElement = document.getElementById('question');
+    var optionsElement = document.getElementById('options');
+    var feedbackElement = document.getElementById('feedback');
+    var nextBtn = document.getElementById('next-btn');
+    var highScoreElement = document.getElementById('high-score-value');
+  
+    var time = 60;
+    var currentQuestionIndex = 0;
+    var score = 0;
+    var highScore = localStorage.getItem('highScore') || 0;
+    var timerInterval;
+  
