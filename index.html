@@ -38,4 +38,32 @@
     var score = 0;
     var highScore = localStorage.getItem('highScore') || 0;
     var timerInterval;
-  
+
+
+    var questions = [
+    {
+      question: 'What does the acronym "API" stand for?',
+      options: ['Advanced Programming Interface', 'Application Programming Interface', 'Automated Program Integration', 'Adaptive Protocol Interface'],
+      correctAnswer: 'Application Programming Interface'
+    },
+    {
+      question: 'Which keyword is used for declaring variables in JavaScript?',
+      options: ['var', 'let', 'const', 'int'],
+      correctAnswer: 'var'
+    },
+    {
+      question: 'Which of these is not a primitive data type in JavaScript?',
+      options: ['String', 'Number', 'Boolean', 'Null'],
+      correctAnswer: 'Number'
+    },
+    {
+      question: 'Which programming language is often used for building web servers?',
+      options: ['Java', 'Python', 'C#', 'Node.js'],
+      correctAnswer: 'Node.js'
+    },
+    {
+      question: 'What is the purpose of the HTML "alt" attribute in the <img> tag?',
+      options: ['To define alternative text for an image', 'To set the alignment of the image', 'To specify the image source', 'To create a hyperlink from the image'],
+      correctAnswer: 'To define alternative text for an image'
+    },
+  ];
